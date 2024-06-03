@@ -4,7 +4,7 @@ numpy
 gspread
 google
 gspread_dataframe
-dotenv
+python-dotenv
 geopy
 folium
 streamlit_folium
