@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+gspread
+google
+gspread_dataframe
+dotenv
+geopy
+folium
+streamlit_folium
+requests
+bs4
+urllib3
