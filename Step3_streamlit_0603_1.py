@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import gspread
 from google.oauth2.service_account import Credentials
 from gspread_dataframe import set_with_dataframe
@@ -8,9 +7,15 @@ import folium
 from streamlit_folium import folium_static
 import streamlit.components.v1 as components
 
-# 環境変数から認証情報を取得
-SPREADSHEET_ID = st.secrets["spreadsheet_id"]
-SP_SHEET = 'kitasan'  # sheet名
+# シークレットから認証情報を取得
+try:
+    SPREADSHEET_ID = st.secrets["spreadsheet_id"]
+    credentials_info = st.secrets["credentials"]
+except KeyError as e:
+    st.error(f"Missing key in secrets: {e}")
+    st.stop()
+
+SP_SHEET = 'kitasan'  # シート名
 
 # セッション状態の初期化
 if 'show_all' not in st.session_state:
@@ -27,7 +32,7 @@ def toggle_show_all():
 # スプレッドシートからデータを読み込む関数
 def load_data_from_spreadsheet():
     scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-    credentials = Credentials.from_service_account_info(st.secrets["credentials"], scopes=scopes)
+    credentials = Credentials.from_service_account_info(credentials_info, scopes=scopes)
     gc = gspread.authorize(credentials)
     sh = gc.open_by_key(SPREADSHEET_ID)
     worksheet = sh.worksheet(SP_SHEET)
@@ -222,6 +227,7 @@ if __name__ == "__main__":
     if 'show_all' not in st.session_state:
         st.session_state['show_all'] = False
     main()
+
 
 
 
