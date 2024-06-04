@@ -153,7 +153,7 @@ def translate_to_japanese(text):
         'Lawson': 'ローソン',
         '7-Eleven - Naka-Meguro': 'セブンイレブン中目黒'
     }
-    return translations.get(text, text)
+    return translations
 
 def main():
     df = load_data_from_spreadsheet()
@@ -226,3 +226,5 @@ if __name__ == "__main__":
     if 'show_all' not in st.session_state:
         st.session_state['show_all'] = False
     main()
+
+
