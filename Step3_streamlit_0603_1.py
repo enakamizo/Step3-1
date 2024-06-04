@@ -1,15 +1,11 @@
-import os
 import streamlit as st
 import pandas as pd
 import numpy as np
 import gspread
 from google.oauth2.service_account import Credentials
 from gspread_dataframe import set_with_dataframe
-from dotenv import load_dotenv
-from geopy.geocoders import Nominatim
 import folium
 from streamlit_folium import folium_static
-import requests
 import streamlit.components.v1 as components
 
 # 環境変数から認証情報を取得
@@ -176,7 +172,7 @@ def main():
             min_value=float(10), 
             max_value=100.0,  # 最大値を100.0に設定
             value=(float(df['家賃'].min()), min(float(df['家賃'].max()), 100.0)),  # 現在の最大値と100を比較して小さい方を選択
-            step=0.5,  # ステップサイズを0.1に設定
+            step=0.5,  # ステップサイズを0.5に設定
             format='%.1f'
         )
 
@@ -226,5 +222,6 @@ if __name__ == "__main__":
     if 'show_all' not in st.session_state:
         st.session_state['show_all'] = False
     main()
+
 
 
