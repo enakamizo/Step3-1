@@ -12,14 +12,8 @@ from streamlit_folium import folium_static
 import requests
 import streamlit.components.v1 as components
 
-# .envファイルから環境変数を読み込む
-load_dotenv()
-
 # 環境変数から認証情報を取得
-SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
-PRIVATE_KEY_PATH = os.getenv("PRIVATE_KEY_PATH")
-#FLASK_SERVER_URL = "http://127.0.0.1:5001"
-
+SPREADSHEET_ID = st.secrets["spreadsheet_id"]
 SP_SHEET = 'kitasan'  # sheet名
 
 # セッション状態の初期化
@@ -36,12 +30,10 @@ def toggle_show_all():
 
 # スプレッドシートからデータを読み込む関数
 def load_data_from_spreadsheet():
-    SP_CREDENTIAL_FILE = PRIVATE_KEY_PATH
     scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-    credentials = Credentials.from_service_account_file(SP_CREDENTIAL_FILE, scopes=scopes)
+    credentials = Credentials.from_service_account_info(st.secrets["credentials"], scopes=scopes)
     gc = gspread.authorize(credentials)
-    SP_SHEET_KEY = SPREADSHEET_ID
-    sh = gc.open_by_key(SP_SHEET_KEY)
+    sh = gc.open_by_key(SPREADSHEET_ID)
     worksheet = sh.worksheet(SP_SHEET)
     pre_data = worksheet.get_all_values()
     col_name = pre_data[0][:]
